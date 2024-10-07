@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./popup.css" />
+  </head>
+  <body>
+    <h1>Tab Manager</h1>
+
+    <label for="keyword">Filter Tabs by Keyword:</label>
+    <input type="text" id="keyword" placeholder="Enter keyword..."/>
+    <button id="filter-btn">Filter Tabs</button>
+    <button id="group-btn">Group Tabs</button>
+    <button id="close-inactive-btn">Close Inactive Tabs</button>
+
+    <div id="tabs-list"></div>
+
+    <script src="./popup.js" type="module"></script>
+  </body>
+</html>
