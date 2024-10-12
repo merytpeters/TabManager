@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const groupButton = document.getElementById('group-btn');
   const closeInactiveButton = document.getElementById('close-inactive-btn');
 
+
   filterButton.addEventListener('click', async () => {
     const keyword = keywordInput.value.trim();
 
@@ -17,12 +18,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  groupButton.addEventListener('click', async () => {
+  groupButton.addEventListener('click', async function () {
     await groupTabs();
   });
 
   closeInactiveButton.addEventListener('click', async () => {
-    const thresholdTime = 60 * 1000;
+    const thresholdTime = 2 * 24 * 60 * 60 * 1000;
     await closeInactiveTabs(thresholdTime);
   });
 });
@@ -138,7 +139,7 @@ async function closeTabs(tabsToClose) {
       for (const tab of tabsToClose) {
         await chrome.tabs.remove(tab.id);
       }
-      console.log(`${tabsToClose} tabs closed`);
+      console.log(`${tabsToClose.length} tabs closed`);
     } else {
       console.log("No tabs were closed");
     }

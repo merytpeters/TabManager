@@ -60,6 +60,11 @@ button {
   color: white;
 }
 
+#new-btn {
+  background-color: #18344b;
+  color: white;
+}
+
 #close-inactive-btn {
   background-color: #871f16;
   color: white;
