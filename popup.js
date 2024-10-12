@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   closeInactiveButton.addEventListener('click', async () => {
-    const thresholdTime = 7 * 24 * 60 * 60 * 1000;
+    const thresholdTime = 60 * 1000;
     await closeInactiveTabs(thresholdTime);
   });
 });
@@ -73,32 +73,100 @@ async function groupTabs() {
 }
 
 async function filterTabs(keyword) {
-  const tabs = await chrome.tabs.query ({});
-  const filteredTabs = [];
-
-  const lowerCaseKeyword = keyword.toLowerCase();
-
-  for (const tab of tabs) {
-    if (tab.title.toLowerCase().includes(lowerCaseKeyword)) {
-      filteredTabs.push(tab);
+  try {
+    const tabs = await chrome.tabs.query ({});
+    if (!Array.isArray(tabs)) {
+      throw new Error("Failed to retrieve tabs.")
     }
-  }
 
-  return filteredTabs;
+    const filteredTabs = [];
+    const lowerCaseKeyword = keyword.toLowerCase();
+
+    for (const tab of tabs) {
+      if (tab.title && tab.title.toLowerCase().includes(lowerCaseKeyword)) {
+        filteredTabs.push(tab);
+      }
+    }
+
+    if (filteredTabs.length > 0) {
+      let tabOptions = "Tabs found:\n";
+      filteredTabs.forEach((tab, index) => {
+        tabOptions += `${index + 1}. ${tab.title}\n`;
+      });
+      tabOptions += `\nType the number of the tab you want to view or type "close" to close all tabs.`;
+
+      const userInput = prompt(tabOptions);
+
+      if (userInput){
+        const userChoice = userInput.toLowerCase();
+        
+        if (userChoice === "close") {
+           await closeTabs(filteredTabs);
+        } else {
+          const selectedIndex = parseInt(userInput, 10) - 1;
+
+          if (selectedIndex >= 0 && selectedIndex < filteredTabs.length) {
+            const selectedTab = filteredTabs[selectedIndex];
+
+            await chrome.tabs.update(selectedTab.id, { active: true });
+            console.log(`Tab "${selectedTab.title}" aactivated.`);
+          } else {
+            console.log("Invalid selection.");
+          }
+        }
+      } else {
+        console.log("No input [provided");
+      }
+     } else {
+       console.log(`No tabs found with the keyword "${keyword}".`);
+     }
+
+    return filteredTabs;
+
+  } catch (error) {
+    console.error("An error occurred:", error);
+    return [];
+  }
+}
+
+
+async function closeTabs(tabsToClose) {
+  if (tabsToClose.length > 0) {
+    const closeTab = confirm(`Close ${tabsToClose.length} tabs ?`);
+
+    if (closeTab) {
+      for (const tab of tabsToClose) {
+        await chrome.tabs.remove(tab.id);
+      }
+      console.log(`${tabsToClose} tabs closed`);
+    } else {
+      console.log("No tabs were closed");
+    }
+  } else {
+    console.log("No inactive tab(s) found");
+  }
 }
 
 async function closeInactiveTabs(thresholdTime) {
   const tabs = await chrome.tabs.query ({});
-  current_time = Date.now();
+  const current_time = Date.now();
+  const { tabLastAccessed = {} } = await chrome.storage.local.get('tabLastAccessed');
+  const inactiveTabs = [];
 
   for (const tab of tabs) {
-    const last_active = tabLastAccessed[tab.id] || current_time;
+    const last_active = tabLastAccessed[tab.id];
 
-    if (current_time - last_active > thresholdTime) {
-      const closeTab = confirm(`Close tabs not used recently?`);
-        if (closeTab) {
-            chrome.tabs.remove(tab.id);
-        }
+    const lastAccessedTime = last_active !== undefined ? last_active : current_time;
+
+    if (current_time - lastAccessedTime > thresholdTime) {
+      inactiveTabs.push(tab);
+    }
+  }
+
+  if (inactiveTabs.length > 0) {
+     const confirmClose = confirm(`Close ${inactiveTabs.length} tabs not used in 3 days ?`);
+    if (confirmClose) {
+      await closeTabs(inactiveTabs);
     }
   }
 }
