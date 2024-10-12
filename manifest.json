@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "Tab Manager",
     "version": "1.0",
-    "description": "Manages chrome tabs by grouping, filtering and closing inactive ones!",
+    "description": "Manages chrome tabs by grouping, easily filtering through to view or close tab, and closing all inactive tabs!",
     "permissions": [
       "tabs",
       "activeTab",
@@ -14,5 +14,11 @@
     },
     "background": {
       "service_worker": "background.js"
-    }
+    },
+    "content_scripts": [
+      {
+      "matches": ["<all_urls>"],
+      "js": ["popup.js"]
+      }
+    ]
 }
