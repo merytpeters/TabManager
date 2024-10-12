@@ -1,25 +1,91 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    width: 20rem;
-  }
-  
-  ul {
-    list-style-type: none;
-    padding-inline-start: 0;
-    margin: 1rem 0;
-  }
-  
-  li {
-    padding: 0.25rem;
-  }
-  li:nth-child(odd) {
-    background: #80808030;
-  }
-  li:nth-child(even) {
-    background: #ffffff;
-  }
-  
-  h3,
-  p {
-    margin: 0;
-  }
+  font-family: Arial, sans-serif;
+  background-color: rgb(111, 61, 111);
+  color: #ede9e9;
+  padding: 20px;
+  width: 300px;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+button {
+  flex: 1;
+  width: 100%;
+  padding: 10px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: background-color 0.3s ease;
+}
+
+#filter-btn {
+  background-color: #561e49;
+  color: white;
+}
+
+#group-btn {
+  background-color: #18344b;
+  color: white;
+}
+
+#close-inactive-btn {
+  background-color: #871f16;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+#tabs-list {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #130f0f;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+#tabs-list div {
+  padding: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+#tabs-list div:last-child {
+  border-bottom: none;
+}
+
   
