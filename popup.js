@@ -165,7 +165,7 @@ async function closeInactiveTabs(thresholdTime) {
   }
 
   if (inactiveTabs.length > 0) {
-     const confirmClose = confirm(`Close ${inactiveTabs.length} tabs not used in 3 days ?`);
+     const confirmClose = confirm(`Close ${inactiveTabs.length} tab(s) not used in 2 days ?`);
     if (confirmClose) {
       await closeTabs(inactiveTabs);
     }
