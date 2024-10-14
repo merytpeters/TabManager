@@ -169,5 +169,7 @@ async function closeInactiveTabs(thresholdTime) {
     if (confirmClose) {
       await closeTabs(inactiveTabs);
     }
+  } else {
+      confirm(`No inactive tabs found`);
   }
 }
