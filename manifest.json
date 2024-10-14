@@ -10,9 +10,15 @@
       "storage"
      ],
     "action": {
-      "default_popup": "popup.html"
+      "default_popup": "popup.html",
+      "default_icon":  {
+        "16": "icon/icon16.png"
+      }
     },
     "background": {
       "service_worker": "background.js"
+    },
+    "icons": {
+      "16": "icon/icon16.png"
     }
 }
